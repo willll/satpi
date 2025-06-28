@@ -1,0 +1,45 @@
+# Build directories
+bin/
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+Makefile2
+compile_commands.json
+
+# CMake generated files
+CTestTestfile.cmake
+Testing/
+CMakeScripts/
+CMakeTmp/
+CMakeLists.txt.user
+
+# Object files and binaries
+*.o
+*.obj
+*.lo
+*.la
+*.al
+*.libs
+*.so
+*.so.*
+*.a
+*.dll
+*.dylib
+*.exe
+*.out
+*.app
+
+# Editor/IDE files
+*.swp
+*~
+*.user
+*.suo
+*.userosscache
+*.userprefs
+*.vcxproj.*
+*.DS_Store
+
+# Other
+*.log
