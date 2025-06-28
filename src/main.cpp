@@ -1,5 +1,6 @@
 #include "Config.h"
 #include "ModemPPPHandler.h"
+#include "NetTunnel.h"
 #include "Logger.h"
 
 int main() {
@@ -14,5 +15,8 @@ int main() {
 
     modem.waitForDialInAndLaunchPPPD();
 
+    NetTunnel tunnel("wlan0", "ppp0");
+    tunnel.setupNAT();
+    
     return 0;
 }

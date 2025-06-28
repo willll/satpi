@@ -17,6 +17,8 @@ Config::Config(const std::string& filename) {
             for (const auto& item : tree.get_child("pppd_options")) {
                 this->pppd_options.push_back(item.second.get_value<std::string>());
             }
+            this->lan_interface = tree.get<std::string>("lan_interface", "wlan0");
+            this->ppp_interface = tree.get<std::string>("ppp_interface", "ppp0");
         } catch (const std::exception& e) {
             Logger::error(std::string("Error parsing config.json: ") + e.what());
             setDefaults();
@@ -37,4 +39,6 @@ void Config::setDefaults() {
         "proxyarp",
         "debug"
     };
+    this->lan_interface = "wlan0";
+    this->ppp_interface = "ppp0";
 }

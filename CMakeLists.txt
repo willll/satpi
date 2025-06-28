@@ -4,6 +4,11 @@ project(dreampi_cpp)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Suppress FindBoost warning for CMake 3.28+
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+endif()
+
 # Set directories
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(INC_DIR "${CMAKE_SOURCE_DIR}/include")
@@ -20,10 +25,9 @@ endif()
 # Create the executable
 add_executable(dreampi_cpp ${SOURCES})
 
-# Boost: Prefer config-based linking, fallback to FindBoost
+# Boost: Prefer config-based linking, fallback to FindBoost (removed in CMake 3.28+)
 set(BOOST_COMPONENTS log log_setup system thread)
 
-# First try config-based linking (modern)
 find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
 if(TARGET Boost::log)
     message(STATUS "Using Boost::log config-based linking")
@@ -35,17 +39,5 @@ if(TARGET Boost::log)
         pthread
     )
 else()
-    # Fallback for older Boost versions on Raspberry Pi
-    message(WARNING "Falling back to legacy FindBoost method")
-    find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
-    include_directories(${Boost_INCLUDE_DIRS})
-    link_directories(${Boost_LIBRARY_DIRS})
-    # If legacy Boost found, link manually
-    target_link_libraries(dreampi_cpp
-        ${Boost_LOG_LIBRARY}
-        ${Boost_LOG_SETUP_LIBRARY}
-        ${Boost_SYSTEM_LIBRARY}
-        ${Boost_THREAD_LIBRARY}
-        pthread
-    )
+    message(FATAL_ERROR "Modern Boost CMake targets not found. Please use a recent Boost version with CMake config files.")
 endif()
