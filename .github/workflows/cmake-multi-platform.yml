@@ -1,6 +1,6 @@
 # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
-name: CMake on Linux x64 and Raspberry Pi
+name: CMake on Linux x64
 
 on:
   push:
@@ -38,35 +38,3 @@ jobs:
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --output-on-failure || true
-
-  build-raspberry-pi:
-    name: Cross-build for Raspberry Pi (armhf)
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set reusable strings
-        id: strings
-        shell: bash
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build-rpi" >> "$GITHUB_OUTPUT"
-
-      - name: Install cross-compiler and dependencies
-        run: |
-          sudo dpkg --add-architecture armhf
-          sudo apt-get update
-          sudo apt-get install -y cmake g++-arm-linux-gnueabihf \
-            libboost-log-dev:armhf libboost-system-dev:armhf libboost-thread-dev:armhf
-
-      - name: Configure CMake for Raspberry Pi
-        run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_C_COMPILER=arm-linux-gnueabihf-gcc
-          -DCMAKE_CXX_COMPILER=arm-linux-gnueabihf-g++
-          -DCMAKE_SYSTEM_NAME=Linux
-          -DCMAKE_SYSTEM_PROCESSOR=arm
-          -S ${{ github.workspace }}
-
-      - name: Build for Raspberry Pi
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} -- -j$(nproc)
