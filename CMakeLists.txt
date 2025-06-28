@@ -25,19 +25,30 @@ endif()
 # Create the executable
 add_executable(dreampi_cpp ${SOURCES})
 
-# Boost: Prefer config-based linking, fallback to FindBoost (removed in CMake 3.28+)
-set(BOOST_COMPONENTS log log_setup system thread)
-
-find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
-if(TARGET Boost::log)
-    message(STATUS "Using Boost::log config-based linking")
+if(CMAKE_CROSSCOMPILING)
+    message(STATUS "Cross-compiling: using manual Boost linking")
+    include_directories(/usr/arm-linux-gnueabihf/include)
+    link_directories(/usr/arm-linux-gnueabihf/lib)
     target_link_libraries(dreampi_cpp
-        Boost::log
-        Boost::log_setup
-        Boost::system
-        Boost::thread
+        boost_log
+        boost_log_setup
+        boost_system
+        boost_thread
         pthread
     )
 else()
-    message(FATAL_ERROR "Modern Boost CMake targets not found. Please use a recent Boost version with CMake config files.")
+    set(BOOST_COMPONENTS log log_setup system thread)
+    find_package(Boost REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+    if(TARGET Boost::log)
+        message(STATUS "Using Boost::log config-based linking")
+        target_link_libraries(dreampi_cpp
+            Boost::log
+            Boost::log_setup
+            Boost::system
+            Boost::thread
+            pthread
+        )
+    else()
+        message(FATAL_ERROR "Modern Boost CMake targets not found. Please use a recent Boost version with CMake config files.")
+    endif()
 endif()
