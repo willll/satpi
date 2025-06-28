@@ -1,0 +1,11 @@
+{
+  "modem_port": "/dev/ttyUSB0",
+  "baud_rate": 115200,
+  "pppd_options": [
+    "local",
+    "noauth",
+    "nodetach",
+    "proxyarp",
+    "debug"
+  ]
+}
