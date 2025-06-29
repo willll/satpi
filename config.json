@@ -1,5 +1,5 @@
 {
-  "modem_port": "/dev/ttyUSB0",
+  "modem_port": "/dev/ttyACM0",
   "baud_rate": 115200,
   "pppd_options": [
     "local",
