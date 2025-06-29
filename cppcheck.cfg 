@@ -1,0 +1,23 @@
+# Cppcheck configuration for satpi project
+
+# Enable all checks, including style and performance
+enable=all
+
+# Suppress warnings for third-party/system headers
+suppress=missingIncludeSystem
+
+# Set the language standard
+std=c++17
+
+# Include project include directories
+I=include
+I=src
+
+# Exclude build and binary directories
+exclude=build
+exclude=bin
+
+# Define macros if needed (example)
+# define=MY_MACRO=1
+
+# You can add more suppressions or includes as needed
