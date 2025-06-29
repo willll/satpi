@@ -16,7 +16,7 @@ bool ModemPPPHandler::openPort() {
     boost::system::error_code ec;
     serial.open(portName, ec);
     if (ec) {
-        LOG_ERROR("Failed to open serial port: " + ec.message());
+        LOG_ERROR("Failed to open serial port (" + portName + "): " + ec.message());
         return false;
     }
 
