@@ -3,10 +3,12 @@
 #include "NetTunnel.h"
 #include "Logger.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     Logger::init(true);
 
-    Config config("config.json");
+    // Use first argument as config file, or default to "config.json"
+    std::string configFile = (argc > 1) ? argv[1] : "config.json";
+    Config config(configFile);
 
     boost::asio::io_context io;
     ModemPPPHandler modem(io, config);
