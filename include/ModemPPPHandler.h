@@ -1,5 +1,4 @@
-#ifndef MODEM_PPP_HANDLER_H
-#define MODEM_PPP_HANDLER_H
+#pragma once
 
 #include <boost/asio.hpp>
 #include <string>
@@ -24,5 +23,3 @@ private:
     void sendCommand(const std::string& cmd);
     void launchPPPD();
 };
-
-#endif // MODEM_PPP_HANDLER_H

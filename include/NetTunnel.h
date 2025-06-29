@@ -1,5 +1,4 @@
-#ifndef NET_TUNNEL_H
-#define NET_TUNNEL_H
+#pragma once 
 
 #include <string>
 
@@ -17,4 +16,3 @@ private:
     void runCommand(const std::string& cmd, const std::string& context);
 };
 
-#endif // NET_TUNNEL_H

@@ -1,5 +1,4 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -17,5 +16,3 @@ struct Config {
 private:
     void setDefaults();
 };
-
-#endif // CONFIG_H

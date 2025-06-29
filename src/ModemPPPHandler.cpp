@@ -16,7 +16,7 @@ bool ModemPPPHandler::openPort() {
     boost::system::error_code ec;
     serial.open(portName, ec);
     if (ec) {
-        Logger::error("Failed to open serial port: " + ec.message());
+        LOG_ERROR("Failed to open serial port: " + ec.message());
         return false;
     }
 
@@ -26,28 +26,28 @@ bool ModemPPPHandler::openPort() {
     serial.set_option(serial_port_base::stop_bits(serial_port_base::stop_bits::one));
     serial.set_option(serial_port_base::flow_control(serial_port_base::flow_control::none));
 
-    Logger::info("Serial port " + portName + " opened.");
+    LOG_INFO("Serial port " + portName + " opened.");
     return true;
 }
 
 void ModemPPPHandler::waitForDialInAndLaunchPPPD() {
-    Logger::info("Waiting for RING...");
+    LOG_INFO("Waiting for RING...");
 
     while (true) {
         std::string line = readLine();
-        Logger::debug("Modem: " + line);
+        LOG_DEBUG("Modem: " + line);
 
         if (line.find("RING") != std::string::npos) {
-            Logger::info("Incoming call detected. Answering...");
+            LOG_INFO("Incoming call detected. Answering...");
             sendCommand("ATA\r");
             std::string response = readLine();
 
             if (response.find("CONNECT") != std::string::npos) {
-                Logger::info("CONNECT received. Launching pppd...");
+                LOG_INFO("CONNECT received. Launching pppd...");
                 launchPPPD();
                 break;
             } else {
-                Logger::warn("Modem did not respond with CONNECT.");
+                LOG_WARN("Modem did not respond with CONNECT.");
             }
         }
     }
